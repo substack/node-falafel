@@ -74,7 +74,7 @@ the rest of the options will be passed directly along to esprima except for
 `'range'` which is always turned on because falafel needs it.
 
 Some of the options you might want from esprima includes:
-`'loc'`, `'raw'`, `'comments'`, `'tokens'`, and `'tolerant'`.
+`'loc'`, `'raw'`, `'comment'`, `'tokens'`, and `'tolerant'`.
 
 nodes
 =====
