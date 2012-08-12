@@ -7,6 +7,7 @@ module.exports = function (src, fn) {
         src = opts.source;
         delete opts.source;
     }
+    opts.loc = true;
     opts.range = true;
     if (typeof src !== 'string') src = String(src);
     
