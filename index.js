@@ -55,7 +55,7 @@ function insertHelpers (node, parent, chunks) {
     
     node.source = function () {
         return chunks.slice(
-            node.range[0], node.range[1] + 1
+            node.range[0], lastChar(node,chunks)
         ).join('');
     };
     
@@ -72,8 +72,12 @@ function insertHelpers (node, parent, chunks) {
     
     function update (s) {
         chunks[node.range[0]] = s;
-        for (var i = node.range[0] + 1; i < node.range[1] + 1; i++) {
+        for (var i = node.range[0] + 1; i < lastChar(node,chunks); i++) {
             chunks[i] = '';
         }
-    };
+    }
+
+    function lastChar(node,chunks){
+        return node.range[1] + (chunks[node.range[1]] !== '\n' ? 0 : 1);
+    }
 }
