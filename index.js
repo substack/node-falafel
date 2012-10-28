@@ -55,7 +55,7 @@ function insertHelpers (node, parent, chunks) {
     
     node.source = function () {
         return chunks.slice(
-            node.range[0], node.range[1] + 1
+            node.range[0], node.range[1]
         ).join('');
     };
     
@@ -72,7 +72,7 @@ function insertHelpers (node, parent, chunks) {
     
     function update (s) {
         chunks[node.range[0]] = s;
-        for (var i = node.range[0] + 1; i < node.range[1] + 1; i++) {
+        for (var i = node.range[0] + 1; i < node.range[1]; i++) {
             chunks[i] = '';
         }
     };
