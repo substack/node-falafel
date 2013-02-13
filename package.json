@@ -23,7 +23,7 @@
         "test" : "tap test/*.js"
     },
     "dependencies" : {
-        "esprima" : "1.0.0"
+        "esprima" : "1.0.2"
     },
     "devDependencies" : {
         "tape" : "~0.0.2",
