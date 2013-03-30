@@ -23,7 +23,7 @@
         "test" : "tap test/*.js"
     },
     "dependencies" : {
-        "esprima" : "git://github.com/substack/esprima.git#is-keyword"
+        "esprima" : "substack/esprima#is-keyword"
     },
     "devDependencies" : {
         "tape" : "~0.0.2",
