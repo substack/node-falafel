@@ -1,4 +1,6 @@
 var parse = require('esprima').parse;
+var SourceNode = require("source-map").SourceNode;
+
 var objectKeys = Object.keys || function (obj) {
     var keys = [];
     for (var key in obj) keys.push(key);
@@ -15,6 +17,10 @@ var isArray = Array.isArray || function (xs) {
     return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
+var base64 = function (str) {
+    return new Buffer(str).toString('base64');
+}
+
 module.exports = function (src, opts, fn) {
     if (typeof opts === 'function') {
         fn = opts;
@@ -27,19 +33,25 @@ module.exports = function (src, opts, fn) {
     }
     src = src === undefined ? opts.source : src;
     opts.range = true;
+    opts.loc = true;
     if (typeof src !== 'string') src = String(src);
     
     var ast = parse(src, opts);
     
     var result = {
         chunks : src.split(''),
-        toString : function () { return result.chunks.join('') },
+        toString : function () {
+            var root = new SourceNode(null, null, null, result.chunks);
+            root.setSourceContent(opts.sourceFilename || "in.js", src);
+            var sm = root.toStringWithSourceMap({ file: opts.generatedFilename || "out.js" });
+            return sm.code + "\n//@ sourceMappingURL=data:application/json;base64," + base64(sm.map.toString()) + "\n";
+        },
         inspect : function () { return result.toString() }
     };
     var index = 0;
     
     (function walk (node, parent) {
-        insertHelpers(node, parent, result.chunks);
+        insertHelpers(node, parent, result.chunks, opts);
         
         forEach(objectKeys(node), function (key) {
             if (key === 'parent') return;
@@ -53,7 +65,7 @@ module.exports = function (src, opts, fn) {
                 });
             }
             else if (child && typeof child.type === 'string') {
-                insertHelpers(child, node, result.chunks);
+                insertHelpers(child, node, result.chunks, opts);
                 walk(child, node);
             }
         });
@@ -63,7 +75,7 @@ module.exports = function (src, opts, fn) {
     return result;
 };
  
-function insertHelpers (node, parent, chunks) {
+function insertHelpers (node, parent, chunks, opts) {
     if (!node.range) return;
     
     node.parent = parent;
@@ -72,6 +84,12 @@ function insertHelpers (node, parent, chunks) {
         return chunks.slice(
             node.range[0], node.range[1]
         ).join('');
+    };
+    
+    node.sourceNodes = function () {
+        return chunks.slice(
+            node.range[0], node.range[1]
+        );
     };
     
     if (node.update && typeof node.update === 'object') {
@@ -85,8 +103,12 @@ function insertHelpers (node, parent, chunks) {
         node.update = update;
     }
     
-    function update (s) {
-        chunks[node.range[0]] = s;
+    function update () {
+        chunks[node.range[0]] = new SourceNode(
+            node.loc.start.line,
+            node.loc.start.column,
+            opts.sourceFilename || "in.js",
+            Array.prototype.slice.apply(arguments));
         for (var i = node.range[0] + 1; i < node.range[1]; i++) {
             chunks[i] = '';
         }

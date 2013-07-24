@@ -1,16 +1,11 @@
-# falafel
+# falafel-map
 
 Transform the [ast](http://en.wikipedia.org/wiki/Abstract_syntax_tree) on a
 recursive walk.
 
-[![browser support](http://ci.testling.com/substack/node-falafel.png)](http://ci.testling.com/substack/node-falafel)
-
-[![build status](https://secure.travis-ci.org/substack/node-falafel.png)](http://travis-ci.org/substack/node-falafel)
-
-This module is like [burrito](https://github.com/substack/node-burrito),
-except that it uses [esprima](http://esprima.org) instead of
-[uglify](https://github.com/mishoo/UglifyJS)
-for friendlier-looking ast nodes.
+This module is like [falafel](https://github.com/substack/node-falafel),
+except that it uses [source-map](https://github.com/mozilla/source-map) for
+appending source maps to processed scripts.
 
 ![falafel döner](http://substack.net/images/falafel.png)
 
@@ -21,7 +16,7 @@ for friendlier-looking ast nodes.
 Put a function wrapper around all array literals.
 
 ``` js
-var falafel = require('falafel');
+var falafelMap = require('falafel-map');
 
 var src = '(' + function () {
     var xs = [ 1, 2, [ 3, 4 ] ];
@@ -29,7 +24,7 @@ var src = '(' + function () {
     console.dir([ xs, ys ]);
 } + ')()';
 
-var output = falafel(src, function (node) {
+var output = falafelMap(src, function (node) {
     if (node.type === 'ArrayExpression') {
         node.update('fn(' + node.source() + ')');
     }
@@ -45,6 +40,7 @@ output:
     var ys = fn([ 5, 6 ]);
     console.dir(fn([ xs, ys ]));
 })()
+//@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoib3V0LmpzIiwic291cmNlcyI6WyJpbi5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxDQUFDLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFZLENBQUE7QUFBQSxDQUFBLENBQUEsQ0FBQSxDQUNULENBQUEsQ0FBQSxDQUFBLENBQUksQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFLLDBCQUFULENBRFM7QUFBQSxDQUFBLENBQUEsQ0FBQSxDQUVULENBQUEsQ0FBQSxDQUFBLENBQUksQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFLLFlBQVQsQ0FGUztBQUFBLENBQUEsQ0FBQSxDQUFBLENBR1QsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFRLENBQUEsQ0FBQSxDQUFSLENBQVksY0FBWixDQUFBLENBSFM7QUFBQSxDQUFiLENBQUEsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbIihmdW5jdGlvbiAoKSB7XG4gICAgdmFyIHhzID0gWyAxLCAyLCBbIDMsIDQgXSBdO1xuICAgIHZhciB5cyA9IFsgNSwgNiBdO1xuICAgIGNvbnNvbGUuZGlyKFsgeHMsIHlzIF0pO1xufSkoKSJdfQ==
 ```
 
 ## custom keyword
@@ -54,14 +50,14 @@ Creating custom keywords is super simple!
 This example creates a new `beep` keyword that uppercases its arguments:
 
 ``` js
-var falafel = require('falafel');
+var falafelMap = require('falafel-map');
 var src = 'console.log(beep "boop", "BOOP");';
 
 function isKeyword (id) {
     if (id === 'beep') return true;
 }
 
-var output = falafel(src, { isKeyword: isKeyword }, function (node) {
+var output = falafelMap(src, { isKeyword: isKeyword }, function (node) {
     if (node.type === 'UnaryExpression'
     && node.keyword === 'beep') {
         node.update(
@@ -77,6 +73,7 @@ Now the source string `console.log(beep "boop", "BOOP");` is converted to:
 ```
 $ node example/keyword.js
 console.log(String("boop").toUpperCase(), "BOOP");
+//@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoib3V0LmpzIiwic291cmNlcyI6WyJpbi5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQVEsQ0FBQSxDQUFBLENBQVIsQ0FBWSw0QkFBWixDQUFBLENBQXlCLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUF6QixDQUFBIiwic291cmNlc0NvbnRlbnQiOlsiY29uc29sZS5sb2coYmVlcCBcImJvb3BcIiwgXCJCT09QXCIpOyJdfQ==
 ```
 
 which we can execute:
@@ -91,10 +88,10 @@ Neat!
 # methods
 
 ``` js
-var falafel = require('falafel')
+var falafelMap = require('falafel-map')
 ```
 
-## falafel(src, opts={}, fn)
+## falafelMap(src, opts={}, fn)
 
 Transform the string source `src` with the function `fn`, returning a
 string-like transformed output object.
@@ -111,8 +108,11 @@ returned and still capture the output.
 
 Instead of passing a `src` you can also use `opts.source`.
 
-All of the `opts` will be passed directly to esprima except for `'range'` which
-is always turned on because falafel needs it.
+All of the `opts` will be passed directly to esprima except for `'range'` and
+`'loc'`, which are always turned on because falafel-map needs them.
+
+`'sourceFilename'` and `'generatedFilename'` can be used to control the names
+used in the map, and default to `in.js` and `out.js`, respectively.
 
 Some of the options you might want from esprima includes:
 `'loc'`, `'raw'`, `'comment'`, `'tokens'`, and `'tolerant'`.
@@ -138,9 +138,18 @@ update functions on children from parent nodes.
 Return the source for the given node, including any modifications made to
 children nodes.
 
-## node.update(s)
+## node.sourceNodes()
 
-Transform the source for the present node to the string `s`.
+Return the array of strings and SourceNodes for the given esprima node.
+
+## node.update()
+
+Replace the source nodes for the given node with the arguments to `update`,
+be they strings or SourceNodes.
+
+To maintain source mappings to children, pass the result of `node.sourceNodes()`
+as one of the arguments to this function. For example:
+`node.update("[", node.sourceNodes(), "]")`.
 
 Note that in `'ForStatement'` node types, there is an existing subnode called
 `update`. For those nodes all the properties are copied over onto the
@@ -155,7 +164,7 @@ Reference to the parent element or `null` at the root element.
 With [npm](http://npmjs.org) do:
 
 ```
-npm install falafel
+npm install falafel-map
 ```
 
 # license

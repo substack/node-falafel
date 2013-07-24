@@ -1,10 +1,10 @@
 {
-    "name" : "falafel",
-    "description" : "transform the ast on a recursive walk",
+    "name" : "falafel-map",
+    "description" : "transform the ast on a recursive walk, generating a source map",
     "version" : "0.3.1",
     "repository" : {
         "type" : "git",
-        "url" : "git://github.com/substack/node-falafel.git"
+        "url" : "git://github.com/alltom/node-falafel-map.git"
     },
     "main" : "index.js",
     "keywords" : [
@@ -22,6 +22,9 @@
     "scripts" : {
         "test" : "tape test/*.js"
     },
+    "dependencies" : {
+        "source-map" : "0.1.x"
+    },
     "bundledDependencies" : [ "esprima" ],
     "devDependencies" : {
         "tape" : "~1.0.4"
@@ -35,6 +38,13 @@
         "email" : "mail@substack.net",
         "url" : "http://substack.net"
     },
+    "contributors" : [
+        {
+            "name" : "Tom Lieber",
+            "email" : "tom@alltom.com",
+            "url" : "http://alltom.com/"
+        }
+    ],
     "testling" : {
         "files" : "test/*.js",
         "browsers" : {
