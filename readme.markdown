@@ -115,7 +115,7 @@ All of the `opts` will be passed directly to esprima except for `'range'` which
 is always turned on because falafel needs it.
 
 Some of the options you might want from esprima includes:
-`'loc'`, `'raw'`, `'comments'`, `'tokens'`, and `'tolerant'`.
+`'loc'`, `'raw'`, `'comment'`, `'tokens'`, and `'tolerant'`.
 
 falafel uses a custom patch of esprima with support for an `opts.isKeyword()`
 function. When `opts.isKeyword(id)` returns `true`, the string `id` will be
