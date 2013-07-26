@@ -113,4 +113,23 @@ function insertHelpers (node, parent, chunks, opts) {
             chunks[i] = '';
         }
     };
+    
+    node.replace = function (sourceNode) {
+        chunks[node.range[0]] = sourceNode;
+        for (var i = node.range[0] + 1; i < node.range[1]; i++) {
+            chunks[i] = '';
+        }
+    };
+    
+    node.prepend = function () {
+        var prevNode = new SourceNode(null, null, null, node.sourceNodes());
+        prevNode.prepend(new SourceNode(null, null, null, Array.prototype.slice.apply(arguments)));
+        node.replace(prevNode);
+    };
+    
+    node.append = function () {
+        var prevNode = new SourceNode(null, null, null, node.sourceNodes());
+        prevNode.add(new SourceNode(null, null, null, Array.prototype.slice.apply(arguments)));
+        node.replace(prevNode);
+    };
 }
