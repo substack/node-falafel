@@ -40,6 +40,12 @@ module.exports = function (src, opts, fn) {
     
     var result = {
         chunks : src.split(''),
+        map : function () {
+            var root = new SourceNode(null, null, null, result.chunks);
+            root.setSourceContent(opts.sourceFilename || "in.js", src);
+            var sm = root.toStringWithSourceMap({ file: opts.generatedFilename || "out.js" });
+            return sm.map.toString();
+        },
         toString : function () {
             var root = new SourceNode(null, null, null, result.chunks);
             root.setSourceContent(opts.sourceFilename || "in.js", src);
