@@ -94,13 +94,29 @@ function insertHelpers (node, parent, chunks) {
         }
     };
 
+    // Get only the non-deleted nodes from the given list.  Doesn't check
+    // if ancestors of the node are deleted.
+    function rejectDeletedNodes (list) {
+        var ret = [];
+        forEach(list, function (node){
+            if (!node.removed) {
+                ret.push(node);
+            }
+        });
+        return ret;
+    }
+
     function remove () {
+        if (node.removed) {
+            return;
+        }
+        node.removed = true;
         // If this node is in a list of elements in the parent, we need to properly it from there, too.
         if (node.parent) {
             // Lists of nodes contained within the parent that reference the node.
             var lists = [];
-            // If we're truly removing a node, the parent should have no traces of it.
-            // Realistically, all this does is delete from:
+            // If we're truly removing a node, the sibling nodes (which are only known to the parent) should be modified.
+            // Realistically, all this does is modify nodes from:
             // * the params field of FunctionExpressions
             // * the declarations field of VariableDeclarations
             // * the elements field of ArrayExpressions
@@ -114,27 +130,40 @@ function insertHelpers (node, parent, chunks) {
             forEach(lists, function(key) {
                 var params = node.parent[key];
                 var idx = params.indexOf(node);
-                var previousNode = params[idx - 1];
-                var nextNode = params[idx + 1];
+
+                var previousNode, nextNode;
+                for (var i = idx - 1; i >= 0; i--) {
+                    if (!params[i].removed) {
+                        previousNode = params[i];
+                        break;
+                    }
+                }
                 if (previousNode) {
                     // Node is not the first element; delete the trailing comma and whitespace from the previous element
                     for (var i = previousNode.range[1]; i < node.range[0]; i++) {
                         chunks[i] = '';
                     }
-                } else if (nextNode) {
-                    // Is the first element; delete the trailing comma and whitespace from the current element
-                    for (var i = node.range[1]; i < nextNode.range[0]; i++) {
-                        chunks[i] = '';
+                } else {
+                    for (var i = idx + 1; i < params.length; i++) {
+                        if (!params[i].removed) {
+                            nextNode = params[i];
+                            break;
+                        }
+                    }
+                    if (nextNode) {
+                        // Is the first element; delete the trailing comma and whitespace from the current element
+                        for (var i = node.range[1]; i < nextNode.range[0]; i++) {
+                            chunks[i] = '';
+                        }
                     }
                 }
-                params.splice(idx, 1);
             });
         }
         // Occasionally it's more correct to just delete the parent instead of trying to update the node asked for
         var deleteParent;
         // If you have something like "var a;" and you delete the "a", that shouldn't leave you with "var ;".
         // On the other hand, if you have ["a"] and delete the "a", [] is fine.
-        deleteParent = node.type === "VariableDeclarator" && node.parent.type === "VariableDeclaration" && node.parent.declarations.length === 0;
+        deleteParent = node.type === "VariableDeclarator" && node.parent.type === "VariableDeclaration" && rejectDeletedNodes(node.parent.declarations).length === 0;
 
         if (deleteParent) {
             node.parent.remove();

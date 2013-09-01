@@ -94,6 +94,29 @@ test('delete middle argument', function (t) {
     t.end();
 });
 
+test('delete middle argument', function (t) {
+    var src = '(' + function (a, b, c) {
+        return a + b * c;
+    } + ')()';
+
+    var output = falafel(src, function (node) {
+        if (node.parent && node.parent.type === "FunctionExpression" && node.type === "Identifier" && (node.name === "a" || node.name === "b")) {
+            node.remove();
+        }
+    });
+
+    t.equal(output.toString(), '(' + function (c) {
+        return a + b * c;
+    } + ')()');
+    try {
+        Function(output)();
+        t.fail("Expected an exception to be thrown");
+    } catch(e) {
+        t.equal(e.message, "a is not defined");
+    }
+    t.end();
+});
+
 test('delete standalone variable declarator', function (t) {
     var src = 'var a;';
 
