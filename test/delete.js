@@ -94,7 +94,7 @@ test('delete middle argument', function (t) {
     t.end();
 });
 
-test('delete middle argument', function (t) {
+test('delete first two arguments', function (t) {
     var src = '(' + function (a, b, c) {
         return a + b * c;
     } + ')()';
