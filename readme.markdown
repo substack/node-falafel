@@ -146,6 +146,11 @@ Note that in `'ForStatement'` node types, there is an existing subnode called
 `update`. For those nodes all the properties are copied over onto the
 `node.update()` function.
 
+## node.remove()
+
+Deletes the given node.  When deleting the node, if invalid syntax would result,
+also delete the parent node, e.g. deleting the "a" part of a "var a;" statement.
+
 ## node.parent
 
 Reference to the parent element or `null` at the root element.
