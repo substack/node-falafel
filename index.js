@@ -16,27 +16,37 @@ var isArray = Array.isArray || function (xs) {
 };
 
 module.exports = function (src, opts, fn) {
+    var ast, result;
+
     if (typeof opts === 'function') {
         fn = opts;
         opts = {};
     }
-    if (typeof src === 'object') {
+    if (typeof src === 'object' && !src.ast) {
         opts = src;
         src = opts.source;
         delete opts.source;
     }
-    src = src === undefined ? opts.source : src;
-    opts.range = true;
-    if (typeof src !== 'string') src = String(src);
-    
-    var ast = parse(src, opts);
-    
-    var result = {
-        chunks : src.split(''),
-        toString : function () { return result.chunks.join('') },
-        inspect : function () { return result.toString() }
-    };
-    var index = 0;
+
+    if (typeof src.ast === 'object') {
+        /* This object is a result of a previous falafel call */
+        result = src;
+        ast = src.ast;
+
+    } else {
+        src = src === undefined ? opts.source : src;
+        opts.range = true;
+        if (typeof src !== 'string') src = String(src);
+
+        ast = parse(src, opts);
+
+        result = {
+            ast: ast,
+            chunks : src.split(''),
+            toString : function () { return result.chunks.join('') },
+            inspect : function () { return result.toString() }
+        };
+    }
     
     (function walk (node, parent) {
         insertHelpers(node, parent, result.chunks);
