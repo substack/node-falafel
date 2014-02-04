@@ -69,6 +69,7 @@ function insertHelpers (node, parent, chunks) {
     node.parent = parent;
     
     node.source = function () {
+        if (arguments.length !== 0) throw new Error('Source doesn\'t take any arguments, perhaps you meant update?');
         return chunks.slice(
             node.range[0], node.range[1]
         ).join('');
@@ -86,6 +87,12 @@ function insertHelpers (node, parent, chunks) {
     }
     
     function update (s) {
+        if (arguments.length !== 1) {
+            throw new Error('Update takes exactly one argument of type string and you passed ' + arguments.length + '.');
+        }
+        if (typeof s !== 'string') {
+            throw new Error('The argument to update must be of type string, you passed an argument of type ' + typeof s + '.')
+        }
         chunks[node.range[0]] = s;
         for (var i = node.range[0] + 1; i < node.range[1]; i++) {
             chunks[i] = '';
