@@ -29,7 +29,8 @@ module.exports = function (src, opts, fn) {
     opts.range = true;
     if (typeof src !== 'string') src = String(src);
     
-    var ast = parse(src, opts);
+    var ast = opts.ast || parse(src, opts);
+    delete opts.ast;
     
     var result = {
         chunks : src.split(''),
