@@ -22,6 +22,9 @@
     "scripts" : {
         "test" : "tape test/*.js"
     },
+    "dependencies": {
+        "esprima": "1.1.0-dev"
+    },
     "bundledDependencies" : [ "esprima" ],
     "devDependencies" : {
         "tape" : "~1.0.4"
