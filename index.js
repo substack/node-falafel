@@ -29,7 +29,7 @@ module.exports = function (src, opts, fn) {
     opts.range = true;
     if (typeof src !== 'string') src = String(src);
     
-    var ast = parse(src, opts);
+    var ast = (opts.parse || parse)(src, opts);
     
     var result = {
         chunks : src.split(''),
