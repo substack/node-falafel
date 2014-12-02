@@ -125,6 +125,9 @@ expression keywords.
 An `opts.isKeyword(id)` value that is a string will be mapped to existing types.
 The only currently supported string value is `"block"`.
 
+If you prefer to use your own, esprima-compatible parse function instead of
+the bundled one, you can pass that in as `opts.parse()`.
+
 # nodes
 
 Aside from the regular [esprima](http://esprima.org) data, you can also call
