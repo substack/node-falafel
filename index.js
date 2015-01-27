@@ -68,6 +68,27 @@ function insertHelpers (node, parent, chunks) {
     
     node.parent = parent;
     
+    node.getAncestor = function(type) {
+      if (node.parent == undefined)
+      {
+        return undefined;
+      }
+      else
+      {
+        var tmpParent = node.parent;
+        while (tmpParent != undefined) {
+          if (tmpParent.type === type)
+          {
+            return tmpParent;
+          }
+          else
+          {
+            tmpParent = tmpParent.parent;
+          }
+        }
+      }
+    };
+
     node.source = function () {
         return chunks.slice(
             node.range[0], node.range[1]
