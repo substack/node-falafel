@@ -20,7 +20,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tape test/*.js"
+    "test": "node --harmony test/bin/run.js test/*.js"
   },
   "dependencies": {
     "acorn": "~0.11.0"
