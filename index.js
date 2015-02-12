@@ -1,4 +1,5 @@
-var parse = require('esprima').parse;
+var parse = require('acorn').parse;
+
 var objectKeys = Object.keys || function (obj) {
     var keys = [];
     for (var key in obj) keys.push(key);
@@ -26,7 +27,6 @@ module.exports = function (src, opts, fn) {
         delete opts.source;
     }
     src = src === undefined ? opts.source : src;
-    opts.range = true;
     if (typeof src !== 'string') src = String(src);
     
     var ast = parse(src, opts);
@@ -64,14 +64,10 @@ module.exports = function (src, opts, fn) {
 };
  
 function insertHelpers (node, parent, chunks) {
-    if (!node.range) return;
-    
     node.parent = parent;
     
     node.source = function () {
-        return chunks.slice(
-            node.range[0], node.range[1]
-        ).join('');
+        return chunks.slice(node.start, node.end).join('');
     };
     
     if (node.update && typeof node.update === 'object') {
@@ -86,9 +82,9 @@ function insertHelpers (node, parent, chunks) {
     }
     
     function update (s) {
-        chunks[node.range[0]] = s;
-        for (var i = node.range[0] + 1; i < node.range[1]; i++) {
+        chunks[node.start] = s;
+        for (var i = node.start + 1; i < node.end; i++) {
             chunks[i] = '';
         }
-    };
+    }
 }

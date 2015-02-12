@@ -1,48 +1,64 @@
 {
-    "name" : "falafel",
-    "description" : "transform the ast on a recursive walk",
-    "version" : "0.3.1",
-    "repository" : {
-        "type" : "git",
-        "url" : "git://github.com/substack/node-falafel.git"
-    },
-    "main" : "index.js",
-    "keywords" : [
-        "ast",
-        "source",
-        "traversal",
-        "syntax",
-        "tree",
-        "burrito"
-    ],
-    "directories" : {
-        "example" : "example",
-        "test" : "test"
-    },
-    "scripts" : {
-        "test" : "tape test/*.js"
-    },
-    "bundledDependencies" : [ "esprima" ],
-    "devDependencies" : {
-        "tape" : "~1.0.4"
-    },
-    "engines" : {
-        "node" : ">=0.4.0"
-    },
-    "license" : "MIT",
-    "author" : {
-        "name" : "James Halliday",
-        "email" : "mail@substack.net",
-        "url" : "http://substack.net"
-    },
-    "testling" : {
-        "files" : "test/*.js",
-        "browsers" : {
-            "iexplore" : [ "6.0", "7.0", "8.0", "9.0" ],
-            "chrome" : [ "20.0" ],
-            "firefox" : [ "10.0", "15.0" ],
-            "safari" : [ "5.1" ],
-            "opera" : [ "12.0" ]
-        }
+  "name": "falafel",
+  "description": "transform the ast on a recursive walk",
+  "version": "0.3.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/node-falafel.git"
+  },
+  "main": "index.js",
+  "keywords": [
+    "ast",
+    "source",
+    "traversal",
+    "syntax",
+    "tree",
+    "burrito"
+  ],
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "dependencies": {
+    "acorn": "~0.11.0"
+  },
+  "devDependencies": {
+    "tape": "^3.5.0"
+  },
+  "engines": {
+    "node": ">=0.4.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net"
+  },
+  "testling": {
+    "files": "test/*.js",
+    "browsers": {
+      "iexplore": [
+        "6.0",
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "chrome": [
+        "20.0"
+      ],
+      "firefox": [
+        "10.0",
+        "15.0"
+      ],
+      "safari": [
+        "5.1"
+      ],
+      "opera": [
+        "12.0"
+      ]
     }
+  }
 }
