@@ -28,7 +28,6 @@ module.exports = function (src, opts, fn) {
     }
     src = src === undefined ? opts.source : src;
     if (typeof src !== 'string') src = String(src);
-    
     var ast = parse(src, opts);
     
     var result = {
