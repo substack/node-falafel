@@ -2,19 +2,20 @@ var falafel = require('../');
 var test = require('tape');
 
 test('for loop', function (t) {
-    t.plan(3);
+    t.plan(4);
     
     var src = '(' + function () {
         var sum = 0;
-        for (var i = 0; i < 10; i++) {
-            sum += i;
-        }
+        if (true)
+            for (var i = 0; i < 10; i++)
+                sum += i;
         return sum;
     } + ')()';
     
     var output = falafel(src, function (node) {
         if (node.type === 'ForStatement') {
             t.equal(node.update.source(), 'i++');
+            t.equal(node.update.type, "UpdateExpression");
             node.update.update('i+=2');
         }
         if (node.type === 'UpdateExpression') {
