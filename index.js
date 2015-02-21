@@ -52,7 +52,6 @@ module.exports = function (src, opts, fn) {
                 });
             }
             else if (child && typeof child.type === 'string') {
-                insertHelpers(child, node, result.chunks);
                 walk(child, node);
             }
         });
