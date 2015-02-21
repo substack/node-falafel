@@ -2,10 +2,12 @@ var falafel = require('../');
 var test = require('tape');
 
 test('for loop', function (t) {
-    t.plan(4);
+    t.plan(7);
     
     var src = '(' + function () {
         var sum = 0;
+        for (var i = 0; i < 10; i++)
+            sum += i;
         if (true)
             for (var i = 0; i < 10; i++)
                 sum += i;
@@ -24,6 +26,5 @@ test('for loop', function (t) {
     });
     
     var res = Function('return ' + output)();
-    t.equal(res, 2 + 4 + 6 + 8);
-    //t.equal(res, 222 + 4 + 6 + 8);
+    t.equal(res, 2 + 4 + 6 + 8 + 2 + 4 + 6 + 8);
 });
