@@ -86,7 +86,7 @@ function insertHelpers (node, parent, chunks) {
         }
 
         if (opts && opts.newline) {
-            if (chunks[i] === '\n' && chunks[i + 1]) {
+            if (chunks[i] === '\n' && i + 1 !== chunks.length) {
                 chunks[i] = '';
             }
         }

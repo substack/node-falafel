@@ -84,13 +84,18 @@ update functions on children from parent nodes.
 Return the source for the given node, including any modifications made to
 children nodes.
 
-## node.update(s)
+## node.update(s, opts={})
 
 Transform the source for the present node to the string `s`.
 
 Note that in `'ForStatement'` node types, there is an existing subnode called
 `update`. For those nodes all the properties are copied over onto the
 `node.update()` function.
+
+Currently supported options:
+
+* `opts.newline=false` - If `true` will remove a trailing newline, unless the
+node being updated is at the end of the file.
 
 ## node.parent
 
