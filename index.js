@@ -79,14 +79,16 @@ function insertHelpers (node, parent, chunks) {
         node.update = update;
     }
 
-    function update (s) {
+    function update (s, opts) {
         chunks[node.start] = s;
         for (var i = node.start + 1; i < node.end; i++) {
             chunks[i] = '';
         }
 
-        if (chunks[i] === '\n' && chunks[i + 1]) {
-            chunks[i] = '';
+        if (opts && opts.newline) {
+            if (chunks[i] === '\n' && chunks[i + 1]) {
+                chunks[i] = '';
+            }
         }
     }
 }
