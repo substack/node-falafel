@@ -26,6 +26,7 @@
     "acorn": "^1.0.3"
   },
   "devDependencies": {
+    "acorn-jsx": "^2.0.0",
     "tape": "^4.0.0"
   },
   "engines": {
