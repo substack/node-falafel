@@ -8,7 +8,10 @@ module.exports = function (src, opts, fn) {
         fn = opts;
         opts = {};
     }
-    if (typeof src === 'object') {
+    if (src && typeof src === 'object' && src.constructor.name === 'Buffer') {
+        src = src.toString();
+    }
+    else if (src && typeof src === 'object') {
         opts = src;
         src = opts.source;
         delete opts.source;
