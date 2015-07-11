@@ -71,6 +71,19 @@ Instead of passing a `src` you can also use `opts.source`.
 All of the `opts` will be passed directly to
 [acorn](https://npmjs.org/package/acorn).
 
+## custom parser
+
+You may pass in an instance of acorn to the opts as `opts.parser` to use that
+version instead of the version of acorn packaged with this library.
+
+```js
+var acorn = require('acorn-jsx');
+
+falafel(src, {parser: acorn, plugins: { jsx: true }}, function(node) {
+  // this will parse jsx
+});
+```
+
 # nodes
 
 Aside from the regular [esprima](http://esprima.org) data, you can also call
