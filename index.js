@@ -1,20 +1,7 @@
 var parse = require('acorn').parse;
-
-var objectKeys = Object.keys || function (obj) {
-    var keys = [];
-    for (var key in obj) keys.push(key);
-    return keys;
-};
-var forEach = function (xs, fn) {
-    if (xs.forEach) return xs.forEach(fn);
-    for (var i = 0; i < xs.length; i++) {
-        fn.call(xs, xs[i], i, xs);
-    }
-};
-
-var isArray = Array.isArray || function (xs) {
-    return Object.prototype.toString.call(xs) === '[object Array]';
-};
+var isArray = require('isarray');
+var objectKeys = require('object-keys');
+var forEach = require('foreach');
 
 module.exports = function (src, opts, fn) {
     if (typeof opts === 'function') {
