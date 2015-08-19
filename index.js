@@ -64,6 +64,10 @@ function insertHelpers (node, parent, chunks) {
     node.parent = parent;
 
     node.source = function () {
+        if (node.sourceCache) {
+            return node.sourceCache;
+        }
+
         var commentHead = '', commentHeadStart = -1, commentHeadEnd = -1;
         var commentFoot = '', commentFootStart = -1, commentFootEnd = -1;
         forEach(node.comments || [], function (comment) {
@@ -97,7 +101,10 @@ function insertHelpers (node, parent, chunks) {
         if (commentFootStart !== -1) {
             commentFoot += chunks.slice(commentFootStart, commentFootEnd).join('');
         }
-        return commentHead + chunks.slice(nodeStart(node), nodeEnd(node)).join('') + commentFoot;
+
+        var src = commentHead + chunks.slice(nodeStart(node), nodeEnd(node)).join('') + commentFoot;
+        node.sourceCache = src;
+        return src;
     };
 
     if (node.update && typeof node.update === 'object') {
@@ -112,6 +119,12 @@ function insertHelpers (node, parent, chunks) {
     }
 
     function update (s) {
+        var parent = node;
+        while (parent) {
+            delete parent.sourceCache;
+            parent = parent.parent;
+        }
+
         chunks[nodeStart(node)] = s;
         for (var i = nodeStart(node) + 1; i < nodeEnd(node); i++) {
             chunks[i] = '';
