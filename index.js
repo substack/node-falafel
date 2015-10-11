@@ -1,4 +1,4 @@
-var parse = require('acorn').parse;
+var parse;
 var isArray = require('isarray');
 var objectKeys = require('object-keys');
 var forEach = require('foreach');
@@ -18,7 +18,12 @@ module.exports = function (src, opts, fn) {
     }
     src = src === undefined ? opts.source : src;
     if (typeof src !== 'string') src = String(src);
-    if (opts.parser) parse = opts.parser.parse;
+    if (opts.parser) {
+        parse = opts.parser.parse;
+    }
+    else {
+        parse = require('acorn').parse;
+    }
     var ast = parse(src, opts);
     
     var result = {
