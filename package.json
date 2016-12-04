@@ -24,7 +24,7 @@
     "test": "node --harmony test/bin/run.js test/*.js"
   },
   "dependencies": {
-    "acorn": "^3.0.0",
+    "acorn": "^4.0.3",
     "foreach": "^2.0.5",
     "isarray": "0.0.1",
     "object-keys": "^1.0.6"
