@@ -20,20 +20,20 @@ module.exports = function (src, opts, fn) {
     if (typeof src !== 'string') src = String(src);
     if (opts.parser) parse = opts.parser.parse;
     var ast = parse(src, opts);
-    
+
     var result = {
         chunks : src.split(''),
         toString : function () { return result.chunks.join('') },
         inspect : function () { return result.toString() }
     };
     var index = 0;
-    
+
     (function walk (node, parent) {
         insertHelpers(node, parent, result.chunks);
-        
+
         forEach(objectKeys(node), function (key) {
             if (key === 'parent') return;
-            
+
             var child = node[key];
             if (isArray(child)) {
                 forEach(child, function (c) {
@@ -48,17 +48,17 @@ module.exports = function (src, opts, fn) {
         });
         fn(node);
     })(ast, undefined);
-    
+
     return result;
 };
- 
+
 function insertHelpers (node, parent, chunks) {
     node.parent = parent;
-    
+
     node.source = function () {
         return chunks.slice(node.start, node.end).join('');
     };
-    
+
     if (node.update && typeof node.update === 'object') {
         var prev = node.update;
         forEach(objectKeys(prev), function (key) {
@@ -69,10 +69,11 @@ function insertHelpers (node, parent, chunks) {
     else {
         node.update = update;
     }
-    
-    function update (s) {
+
+    function update (s, length) {
+        length = length || node.end;
         chunks[node.start] = s;
-        for (var i = node.start + 1; i < node.end; i++) {
+        for (var i = node.start + 1; i < length; i++) {
             chunks[i] = '';
         }
     }
