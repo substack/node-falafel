@@ -24,15 +24,15 @@
     "test": "node --harmony test/bin/run.js test/*.js"
   },
   "dependencies": {
-    "acorn": "^3.0.0",
+    "acorn": "^4.0.11",
     "foreach": "^2.0.5",
-    "isarray": "0.0.1",
-    "object-keys": "^1.0.6"
+    "isarray": "2.0.1",
+    "object-keys": "^1.0.11"
   },
   "devDependencies": {
-    "acorn-jsx": "^3.0.0",
+    "acorn-jsx": "^3.0.1",
     "covert": "^1.1.0",
-    "glob": "^6.0.4",
+    "glob": "^7.1.1",
     "tape": "^4.0.0"
   },
   "engines": {
