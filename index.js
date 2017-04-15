@@ -54,6 +54,22 @@ module.exports = function (src, opts, fn) {
  
 function insertHelpers (node, parent, chunks) {
     node.parent = parent;
+
+    node.parents = function(selector){
+        if(selector){
+            selector = selector.split('=');
+        }else{
+            return node.parent;
+        }
+
+        while(node.parent){
+            if(node.parent[selector[0]] === selector[1]){
+                return node.parent;
+            }
+            node = node.parent;
+        }
+        return null;
+    };
     
     node.source = function () {
         return chunks.slice(node.start, node.end).join('');
