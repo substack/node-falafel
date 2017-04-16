@@ -6,6 +6,8 @@ recursive walk.
 [![browser support](http://ci.testling.com/substack/node-falafel.png)](http://ci.testling.com/substack/node-falafel)
 
 [![build status](https://secure.travis-ci.org/substack/node-falafel.png)](http://travis-ci.org/substack/node-falafel)
+[![Dependency Status](https://david-dm.org/substack/node-falafel.svg)](https://david-dm.org/substack/node-falafel)
+[![devDependency Status](https://david-dm.org/substack/node-falafel/dev-status.svg)](https://david-dm.org/substack/node-falafel#info=devDependencies)
 
 This modules uses [acorn](https://npmjs.org/package/acorn) to create an AST from
 source code.
