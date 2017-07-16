@@ -27,7 +27,8 @@
     "acorn": "^5.0.0",
     "foreach": "^2.0.5",
     "isarray": "0.0.1",
-    "object-keys": "^1.0.6"
+    "object-keys": "^1.0.6",
+    "source-map" : "0.1.x"
   },
   "devDependencies": {
     "acorn-jsx": "^3.0.0",

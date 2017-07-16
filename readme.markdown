@@ -43,6 +43,7 @@ output:
     var ys = fn([ 5, 6 ]);
     console.dir(fn([ xs, ys ]));
 })()
+//@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoib3V0LmpzIiwic291cmNlcyI6WyJpbi5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxDQUFDLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFZLENBQUE7QUFBQSxDQUFBLENBQUEsQ0FBQSxDQUNULENBQUEsQ0FBQSxDQUFBLENBQUksQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFLLDBCQUFULENBRFM7QUFBQSxDQUFBLENBQUEsQ0FBQSxDQUVULENBQUEsQ0FBQSxDQUFBLENBQUksQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFLLFlBQVQsQ0FGUztBQUFBLENBQUEsQ0FBQSxDQUFBLENBR1QsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFRLENBQUEsQ0FBQSxDQUFSLENBQVksY0FBWixDQUFBLENBSFM7QUFBQSxDQUFiLENBQUEsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbIihmdW5jdGlvbiAoKSB7XG4gICAgdmFyIHhzID0gWyAxLCAyLCBbIDMsIDQgXSBdO1xuICAgIHZhciB5cyA9IFsgNSwgNiBdO1xuICAgIGNvbnNvbGUuZGlyKFsgeHMsIHlzIF0pO1xufSkoKSJdfQ==
 ```
 
 # methods
@@ -97,9 +98,18 @@ update functions on children from parent nodes.
 Return the source for the given node, including any modifications made to
 children nodes.
 
+## node.sourceNodes()
+
+Return the array of strings and SourceNodes for the given node.
+
 ## node.update(s)
 
-Transform the source for the present node to the string `s`.
+Replace the source nodes for the given node with the arguments to `update`,
+be they strings or SourceNodes.
+
+To maintain source mappings to children, pass the result of `node.sourceNodes()`
+as one of the arguments to this function. For example:
+`node.update("[", node.sourceNodes(), "]")`.
 
 Note that in `'ForStatement'` node types, there is an existing subnode called
 `update`. For those nodes all the properties are copied over onto the
