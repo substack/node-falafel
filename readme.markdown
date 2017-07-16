@@ -1,11 +1,14 @@
-# falafel-map
+# falafel
 
 Transform the [ast](http://en.wikipedia.org/wiki/Abstract_syntax_tree) on a
 recursive walk.
 
-This module is like [falafel](https://github.com/substack/node-falafel),
-except that it uses [source-map](https://github.com/mozilla/source-map) for
-appending source maps to processed scripts.
+[![browser support](http://ci.testling.com/substack/node-falafel.png)](http://ci.testling.com/substack/node-falafel)
+
+[![build status](https://secure.travis-ci.org/substack/node-falafel.png)](http://travis-ci.org/substack/node-falafel)
+
+This modules uses [acorn](https://npmjs.org/package/acorn) to create an AST from
+source code.
 
 ![falafel döner](http://substack.net/images/falafel.png)
 
@@ -16,7 +19,7 @@ appending source maps to processed scripts.
 Put a function wrapper around all array literals.
 
 ``` js
-var falafelMap = require('falafel-map');
+var falafel = require('falafel');
 
 var src = '(' + function () {
     var xs = [ 1, 2, [ 3, 4 ] ];
@@ -24,7 +27,7 @@ var src = '(' + function () {
     console.dir([ xs, ys ]);
 } + ')()';
 
-var output = falafelMap(src, function (node) {
+var output = falafel(src, function (node) {
     if (node.type === 'ArrayExpression') {
         node.update('fn(' + node.source() + ')');
     }
@@ -43,55 +46,13 @@ output:
 //@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoib3V0LmpzIiwic291cmNlcyI6WyJpbi5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxDQUFDLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFZLENBQUE7QUFBQSxDQUFBLENBQUEsQ0FBQSxDQUNULENBQUEsQ0FBQSxDQUFBLENBQUksQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFLLDBCQUFULENBRFM7QUFBQSxDQUFBLENBQUEsQ0FBQSxDQUVULENBQUEsQ0FBQSxDQUFBLENBQUksQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFLLFlBQVQsQ0FGUztBQUFBLENBQUEsQ0FBQSxDQUFBLENBR1QsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFRLENBQUEsQ0FBQSxDQUFSLENBQVksY0FBWixDQUFBLENBSFM7QUFBQSxDQUFiLENBQUEsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbIihmdW5jdGlvbiAoKSB7XG4gICAgdmFyIHhzID0gWyAxLCAyLCBbIDMsIDQgXSBdO1xuICAgIHZhciB5cyA9IFsgNSwgNiBdO1xuICAgIGNvbnNvbGUuZGlyKFsgeHMsIHlzIF0pO1xufSkoKSJdfQ==
 ```
 
-## custom keyword
-
-Creating custom keywords is super simple!
-
-This example creates a new `beep` keyword that uppercases its arguments:
-
-``` js
-var falafelMap = require('falafel-map');
-var src = 'console.log(beep "boop", "BOOP");';
-
-function isKeyword (id) {
-    if (id === 'beep') return true;
-}
-
-var output = falafelMap(src, { isKeyword: isKeyword }, function (node) {
-    if (node.type === 'UnaryExpression'
-    && node.keyword === 'beep') {
-        node.update(
-            'String(' + node.argument.source() + ').toUpperCase()'
-        );
-    }
-});
-console.log(output);
-```
-
-Now the source string `console.log(beep "boop", "BOOP");` is converted to:
-
-```
-$ node example/keyword.js
-console.log(String("boop").toUpperCase(), "BOOP");
-//@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoib3V0LmpzIiwic291cmNlcyI6WyJpbi5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUFBLENBQVEsQ0FBQSxDQUFBLENBQVIsQ0FBWSw0QkFBWixDQUFBLENBQXlCLENBQUEsQ0FBQSxDQUFBLENBQUEsQ0FBQSxDQUF6QixDQUFBIiwic291cmNlc0NvbnRlbnQiOlsiY29uc29sZS5sb2coYmVlcCBcImJvb3BcIiwgXCJCT09QXCIpOyJdfQ==
-```
-
-which we can execute:
-
-```
-$ node example/keyword.js | node
-BOOP BOOP
-```
-
-Neat!
-
 # methods
 
 ``` js
-var falafelMap = require('falafel-map')
+var falafel = require('falafel')
 ```
 
-## falafelMap(src, opts={}, fn)
+## falafel(src, opts={}, fn)
 
 Transform the string source `src` with the function `fn`, returning a
 string-like transformed output object.
@@ -108,22 +69,21 @@ returned and still capture the output.
 
 Instead of passing a `src` you can also use `opts.source`.
 
-All of the `opts` will be passed directly to esprima except for `'range'` and
-`'loc'`, which are always turned on because falafel-map needs them.
+All of the `opts` will be passed directly to
+[acorn](https://npmjs.org/package/acorn)
 
-`'sourceFilename'` and `'generatedFilename'` can be used to control the names
-used in the map, and default to `in.js` and `out.js`, respectively.
+## custom parser
 
-Some of the options you might want from esprima includes:
-`'loc'`, `'raw'`, `'comment'`, `'tokens'`, and `'tolerant'`.
+You may pass in an instance of acorn to the opts as `opts.parser` to use that
+version instead of the version of acorn packaged with this library.
 
-falafel uses a custom patch of esprima with support for an `opts.isKeyword()`
-function. When `opts.isKeyword(id)` returns `true`, the string `id` will be
-treated as a keyword. You can use this behavior to create custom unary
-expression keywords.
+```js
+var acorn = require('acorn-jsx');
 
-An `opts.isKeyword(id)` value that is a string will be mapped to existing types.
-The only currently supported string value is `"block"`.
+falafel(src, {parser: acorn, plugins: { jsx: true }}, function(node) {
+  // this will parse jsx
+});
+```
 
 # nodes
 
@@ -164,10 +124,9 @@ Reference to the parent element or `null` at the root element.
 With [npm](http://npmjs.org) do:
 
 ```
-npm install falafel-map
+npm install falafel
 ```
 
 # license
 
 MIT
-

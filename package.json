@@ -1,58 +1,72 @@
 {
-    "name" : "falafel-map",
-    "description" : "transform the ast on a recursive walk, generating a source map",
-    "version" : "0.3.2",
-    "repository" : {
-        "type" : "git",
-        "url" : "git://github.com/alltom/node-falafel-map.git"
+  "name": "falafel",
+  "description": "transform the ast on a recursive walk",
+  "version": "2.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/node-falafel.git"
+  },
+  "main": "index.js",
+  "keywords": [
+    "ast",
+    "burrito",
+    "source",
+    "syntax",
+    "traversal",
+    "tree"
+  ],
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "coverage": "covert test/*.js",
+    "test": "node --harmony test/bin/run.js test/*.js"
+  },
+  "dependencies": {
+    "acorn": "^5.0.0",
+    "foreach": "^2.0.5",
+    "isarray": "0.0.1",
+    "object-keys": "^1.0.6",
+    "source-map" : "0.1.x"
+  },
+  "devDependencies": {
+    "acorn-jsx": "^3.0.0",
+    "covert": "^1.1.0",
+    "glob": "^6.0.4",
+    "tape": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=0.4.0"
+  },
+  "license": "MIT",
+  "author": {
+    "email": "mail@substack.net",
+    "name": "James Halliday",
+    "url": "http://substack.net"
+  },
+  "testling": {
+    "browsers": {
+      "chrome": [
+        "20.0"
+      ],
+      "firefox": [
+        "10.0",
+        "15.0"
+      ],
+      "iexplore": [
+        "6.0",
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "opera": [
+        "12.0"
+      ],
+      "safari": [
+        "5.1"
+      ]
     },
-    "main" : "index.js",
-    "keywords" : [
-        "ast",
-        "source",
-        "traversal",
-        "syntax",
-        "tree",
-        "burrito"
-    ],
-    "directories" : {
-        "example" : "example",
-        "test" : "test"
-    },
-    "scripts" : {
-        "test" : "tape test/*.js"
-    },
-    "dependencies" : {
-        "source-map" : "0.1.x"
-    },
-    "bundledDependencies" : [ "esprima" ],
-    "devDependencies" : {
-        "tape" : "~1.0.4"
-    },
-    "engines" : {
-        "node" : ">=0.4.0"
-    },
-    "license" : "MIT",
-    "author" : {
-        "name" : "James Halliday",
-        "email" : "mail@substack.net",
-        "url" : "http://substack.net"
-    },
-    "contributors" : [
-        {
-            "name" : "Tom Lieber",
-            "email" : "tom@alltom.com",
-            "url" : "http://alltom.com/"
-        }
-    ],
-    "testling" : {
-        "files" : "test/*.js",
-        "browsers" : {
-            "iexplore" : [ "6.0", "7.0", "8.0", "9.0" ],
-            "chrome" : [ "20.0" ],
-            "firefox" : [ "10.0", "15.0" ],
-            "safari" : [ "5.1" ],
-            "opera" : [ "12.0" ]
-        }
-    }
+    "files": "test/*.js"
+  }
 }

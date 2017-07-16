@@ -1,21 +1,8 @@
-var parse = require('esprima').parse;
+var parse = require('acorn').parse;
+var isArray = require('isarray');
+var objectKeys = require('object-keys');
+var forEach = require('foreach');
 var SourceNode = require("source-map").SourceNode;
-
-var objectKeys = Object.keys || function (obj) {
-    var keys = [];
-    for (var key in obj) keys.push(key);
-    return keys;
-};
-var forEach = function (xs, fn) {
-    if (xs.forEach) return xs.forEach(fn);
-    for (var i = 0; i < xs.length; i++) {
-        fn.call(xs, xs[i], i, xs);
-    }
-};
-
-var isArray = Array.isArray || function (xs) {
-    return Object.prototype.toString.call(xs) === '[object Array]';
-};
 
 var base64 = function (str) {
     return new Buffer(str).toString('base64');
@@ -26,16 +13,19 @@ module.exports = function (src, opts, fn) {
         fn = opts;
         opts = {};
     }
-    if (typeof src === 'object') {
+    if (src && typeof src === 'object' && src.constructor.name === 'Buffer') {
+        src = src.toString();
+    }
+    else if (src && typeof src === 'object') {
         opts = src;
         src = opts.source;
         delete opts.source;
     }
     src = src === undefined ? opts.source : src;
-    opts.range = true;
-    opts.loc = true;
+    opts.locations = true;
+
     if (typeof src !== 'string') src = String(src);
-    
+    if (opts.parser) parse = opts.parser.parse;
     var ast = parse(src, opts);
     
     var result = {
@@ -71,7 +61,6 @@ module.exports = function (src, opts, fn) {
                 });
             }
             else if (child && typeof child.type === 'string') {
-                insertHelpers(child, node, result.chunks, opts);
                 walk(child, node);
             }
         });
@@ -82,19 +71,16 @@ module.exports = function (src, opts, fn) {
 };
  
 function insertHelpers (node, parent, chunks, opts) {
-    if (!node.range) return;
-    
+
     node.parent = parent;
     
     node.source = function () {
-        return chunks.slice(
-            node.range[0], node.range[1]
-        ).join('');
+        return chunks.slice(node.start, node.end).join('');
     };
     
     node.sourceNodes = function () {
         return chunks.slice(
-            node.range[0], node.range[1]
+            node.start, node.end
         );
     };
     
@@ -108,34 +94,15 @@ function insertHelpers (node, parent, chunks, opts) {
     else {
         node.update = update;
     }
-    
+
     function update () {
-        chunks[node.range[0]] = new SourceNode(
+        chunks[node.start] = new SourceNode(
             node.loc.start.line,
             node.loc.start.column,
             opts.sourceFilename || "in.js",
             Array.prototype.slice.apply(arguments));
-        for (var i = node.range[0] + 1; i < node.range[1]; i++) {
+        for (var i = node.start + 1; i < node.end; i++) {
             chunks[i] = '';
         }
-    };
-    
-    node.replace = function (sourceNode) {
-        chunks[node.range[0]] = sourceNode;
-        for (var i = node.range[0] + 1; i < node.range[1]; i++) {
-            chunks[i] = '';
-        }
-    };
-    
-    node.prepend = function () {
-        var prevNode = new SourceNode(null, null, null, node.sourceNodes());
-        prevNode.prepend(new SourceNode(null, null, null, Array.prototype.slice.apply(arguments)));
-        node.replace(prevNode);
-    };
-    
-    node.append = function () {
-        var prevNode = new SourceNode(null, null, null, node.sourceNodes());
-        prevNode.add(new SourceNode(null, null, null, Array.prototype.slice.apply(arguments)));
-        node.replace(prevNode);
     };
 }
