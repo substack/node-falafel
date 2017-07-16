@@ -70,7 +70,7 @@ returned and still capture the output.
 Instead of passing a `src` you can also use `opts.source`.
 
 All of the `opts` will be passed directly to
-[acorn](https://npmjs.org/package/acorn)
+[acorn](https://npmjs.org/package/acorn).
 
 ## custom parser
 
@@ -100,9 +100,9 @@ children nodes.
 
 ## node.sourceNodes()
 
-Return the array of strings and SourceNodes for the given esprima node.
+Return the array of strings and SourceNodes for the given node.
 
-## node.update()
+## node.update(s)
 
 Replace the source nodes for the given node with the arguments to `update`,
 be they strings or SourceNodes.
