@@ -1,5 +1,4 @@
 var parse = require('acorn').parse;
-var objectKeys = require('object-keys');
 var forEach = require('foreach');
 
 module.exports = function (src, opts, fn) {
@@ -30,7 +29,7 @@ module.exports = function (src, opts, fn) {
     (function walk (node, parent) {
         insertHelpers(node, parent, result.chunks);
         
-        forEach(objectKeys(node), function (key) {
+        forEach(Object.keys(node), function (key) {
             if (key === 'parent') return;
             
             var child = node[key];
@@ -60,7 +59,7 @@ function insertHelpers (node, parent, chunks) {
     
     if (node.update && typeof node.update === 'object') {
         var prev = node.update;
-        forEach(objectKeys(prev), function (key) {
+        forEach(Object.keys(prev), function (key) {
             update[key] = prev[key];
         });
         node.update = update;
