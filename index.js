@@ -1,5 +1,4 @@
 var parse = require('acorn').parse;
-var isArray = require('isarray');
 var objectKeys = require('object-keys');
 var forEach = require('foreach');
 
@@ -35,7 +34,7 @@ module.exports = function (src, opts, fn) {
             if (key === 'parent') return;
             
             var child = node[key];
-            if (isArray(child)) {
+            if (Array.isArray(child)) {
                 forEach(child, function (c) {
                     if (c && typeof c.type === 'string') {
                         walk(c, node);
