@@ -34,6 +34,7 @@
     "covert": "^1.1.0",
     "glob": "^6.0.4",
     "safe-buffer": "^5.2.0",
+    "semver": "^6.0.0",
     "tape": "^4.0.0"
   },
   "engines": {
