@@ -5,7 +5,7 @@ recursive walk.
 
 [![browser support](http://ci.testling.com/substack/node-falafel.png)](http://ci.testling.com/substack/node-falafel)
 
-[![build status](https://secure.travis-ci.org/substack/node-falafel.png)](http://travis-ci.org/substack/node-falafel)
+[![build status](https://github.com/substack/node-falafel/workflows/Node%20CI/badge.svg?branch=master)](https://github.com/substack/node-falafel/actions)
 
 This modules uses [acorn](https://npmjs.org/package/acorn) to create an AST from
 source code.
