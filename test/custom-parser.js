@@ -1,6 +1,9 @@
 var falafel = require('../');
-var acorn = require('acorn-jsx');
+var acorn = require('acorn');
+var jsx = require('acorn-jsx');
 var test = require('tape');
+
+var acornWithJsx = acorn.Parser.extend(jsx());
 
 test('custom parser', function (t) {
 
@@ -36,7 +39,7 @@ test('custom parser', function (t) {
 
   t.plan(nodeTypes.length);
 
-  var output = falafel(src, {parser: acorn, ecmaVersion: 6, plugins: { jsx: true }}, function(node) {
+  var output = falafel(src, {parser: acornWithJsx, ecmaVersion: 6, plugins: { jsx: true }}, function(node) {
     t.equal(node.type, nodeTypes.shift());
   });
 });

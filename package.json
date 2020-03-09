@@ -30,7 +30,7 @@
     "object-keys": "^1.0.6"
   },
   "devDependencies": {
-    "acorn-jsx": "^3.0.0",
+    "acorn-jsx": "^5.2.0",
     "covert": "^1.1.0",
     "glob": "^6.0.4",
     "tape": "^4.0.0"
