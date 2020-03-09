@@ -25,10 +25,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: npm install
+      if: matrix.node-version != '0.8'
     - run: |
-        if [[ "$(node -v)" = "0.8" ]]; then export NPM_CONFIG_STRICT_SSL=false; fi
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
         . "$HOME/.nvm/nvm.sh"
         nvm install-latest-npm
         npm install
+      env:
+        NPM_CONFIG_STRICT_SSL: 'false'
+      if: matrix.node-version == '0.8'
     - run: npm test
