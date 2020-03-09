@@ -25,5 +25,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
+    - run: |
+        if [[ "$(node -v)" = "0.8" ]]; then export NPM_CONFIG_STRICT_SSL=false; fi
+        npm install
     - run: npm test
