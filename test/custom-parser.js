@@ -1,11 +1,12 @@
 var falafel = require('../');
-var acorn = require('acorn');
-var jsx = require('acorn-jsx');
 var test = require('tape');
+var semver = require('semver');
 
-var acornWithJsx = acorn.Parser.extend(jsx());
-
-test('custom parser', function (t) {
+// acorn-jsx requires node 4
+test('custom parser', { skip: semver.satisfies(process.version, '< 4.0.0') },function (t) {
+  var acorn = require('acorn');
+  var jsx = require('acorn-jsx');
+  var acornWithJsx = acorn.Parser.extend(jsx());
 
   var src = '(function() { var f = {a: "b"}; var a = <div {...f} className="test"></div>; })()';
 
