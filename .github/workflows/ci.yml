@@ -28,6 +28,7 @@ jobs:
     - run: |
         if [[ "$(node -v)" = "0.8" ]]; then export NPM_CONFIG_STRICT_SSL=false; fi
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+        . "$HOME/.nvm/nvm.sh"
         nvm install-latest-npm
         npm install
     - run: npm test
