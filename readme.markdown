@@ -86,7 +86,7 @@ falafel(src, {parser: acorn, plugins: { jsx: true }}, function(node) {
 
 # nodes
 
-Aside from the regular [esprima](http://esprima.org) data, you can also call
+Aside from the regular [acorn](https://npmjs.org/package/acorn) data, you can also call
 some inserted methods on nodes.
 
 Aside from updating the current node, you can also reach into sub-nodes to call
