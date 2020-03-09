@@ -10,7 +10,7 @@ recursive walk.
 This modules uses [acorn](https://npmjs.org/package/acorn) to create an AST from
 source code.
 
-![falafel döner](http://substack.net/images/falafel.png)
+![falafel döner](./falafel.png)
 
 # example
 
