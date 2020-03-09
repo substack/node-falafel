@@ -2,6 +2,7 @@ var acorn = require('acorn');
 var isArray = require('isarray');
 var objectKeys = require('object-keys');
 var forEach = require('foreach');
+var util = require('util');
 
 module.exports = function (src, opts, fn) {
     if (typeof opts === 'function') {
@@ -26,6 +27,9 @@ module.exports = function (src, opts, fn) {
         toString : function () { return result.chunks.join('') },
         inspect : function () { return result.toString() }
     };
+    if (util.inspect.custom) {
+        result[util.inspect.custom] = result.toString;
+    }
     var index = 0;
     
     (function walk (node, parent) {

@@ -1,8 +1,9 @@
 var falafel = require('../');
 var test = require('tape');
+var util = require('util');
 
 test('inspect', function (t) {
-    t.plan(6);
+    t.plan(7);
     
     var src = '(function () {'
         + 'var xs = [ 1, 2, [ 3, 4 ] ];'
@@ -16,6 +17,7 @@ test('inspect', function (t) {
         }
     });
     t.equal(output.inspect(), output.toString());
+    t.equal(util.inspect(output), output.toString());
     
     var arrays = [
         [ 3, 4 ],
