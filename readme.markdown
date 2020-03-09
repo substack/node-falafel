@@ -57,9 +57,9 @@ Transform the string source `src` with the function `fn`, returning a
 string-like transformed output object.
 
 For every node in the ast, `fn(node)` fires. The recursive walk is a
-pre-traversal, so children get called before their parents.
+post-order traversal, so children get called before their parents.
 
-Performing a pre-traversal makes it easier to write nested transforms since
+Performing a post-order traversal makes it easier to write nested transforms since
 transforming parents often requires transforming all its children first.
 
 The return value is string-like (it defines `.toString()` and `.inspect()`) so
