@@ -1,5 +1,6 @@
-var parse = require('acorn').parse;
+var acorn = require('acorn');
 var forEach = require('foreach');
+var util = require('util');
 
 module.exports = function (src, opts, fn) {
     if (typeof opts === 'function') {
@@ -16,14 +17,17 @@ module.exports = function (src, opts, fn) {
     }
     src = src === undefined ? opts.source : src;
     if (typeof src !== 'string') src = String(src);
-    if (opts.parser) parse = opts.parser.parse;
-    var ast = parse(src, opts);
+    var parser = opts.parser || acorn;
+    var ast = parser.parse(src, opts);
     
     var result = {
         chunks : src.split(''),
         toString : function () { return result.chunks.join('') },
         inspect : function () { return result.toString() }
     };
+    if (util.inspect.custom) {
+        result[util.inspect.custom] = result.toString;
+    }
     var index = 0;
     
     (function walk (node, parent) {

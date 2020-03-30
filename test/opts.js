@@ -1,4 +1,5 @@
 var falafel = require('../');
+var Buffer = require('safe-buffer').Buffer;
 var test = require('tape');
 
 test('first opts arg', function (t) {
@@ -70,7 +71,7 @@ test('opts.source', function (t) {
 test('Buffer opts.source', function (t) {
     t.plan(5);
     
-    var src = Buffer('(function () {'
+    var src = Buffer.from('(function () {'
         + 'var xs = [ 1, 2, [ 3, 4 ] ];'
         + 'var ys = [ 5, 6 ];'
         + 'g([ xs, ys ]);'
@@ -103,7 +104,7 @@ test('Buffer opts.source', function (t) {
 test('Buffer source', function (t) {
     t.plan(5);
     
-    var src = Buffer('(function () {'
+    var src = Buffer.from('(function () {'
         + 'var xs = [ 1, 2, [ 3, 4 ] ];'
         + 'var ys = [ 5, 6 ];'
         + 'g([ xs, ys ]);'

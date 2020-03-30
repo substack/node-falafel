@@ -1,7 +1,7 @@
 {
   "name": "falafel",
   "description": "transform the ast on a recursive walk",
-  "version": "2.1.0",
+  "version": "2.2.4",
   "repository": {
     "type": "git",
     "url": "git://github.com/substack/node-falafel.git"
@@ -24,13 +24,15 @@
     "test": "node --harmony test/bin/run.js test/*.js"
   },
   "dependencies": {
-    "acorn": "^5.0.0",
+    "acorn": "^7.1.1",
     "foreach": "^2.0.5"
   },
   "devDependencies": {
-    "acorn-jsx": "^3.0.0",
+    "acorn-jsx": "^5.2.0",
     "covert": "^1.1.0",
     "glob": "^6.0.4",
+    "safe-buffer": "^5.2.0",
+    "semver": "^6.0.0",
     "tape": "^4.0.0"
   },
   "engines": {

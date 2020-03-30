@@ -1,7 +1,7 @@
 var falafel = require('../');
 var test = require('tape');
 
-test('array', function (t) {
+test('async', function (t) {
     t.plan(5);
     
     var src = '(function () {'

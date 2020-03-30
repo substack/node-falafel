@@ -5,12 +5,12 @@ recursive walk.
 
 [![browser support](http://ci.testling.com/substack/node-falafel.png)](http://ci.testling.com/substack/node-falafel)
 
-[![build status](https://secure.travis-ci.org/substack/node-falafel.png)](http://travis-ci.org/substack/node-falafel)
+[![build status](https://github.com/substack/node-falafel/workflows/Node%20CI/badge.svg?branch=master)](https://github.com/substack/node-falafel/actions)
 
 This modules uses [acorn](https://npmjs.org/package/acorn) to create an AST from
 source code.
 
-![falafel döner](http://substack.net/images/falafel.png)
+![falafel döner](./falafel.png)
 
 # example
 
@@ -57,9 +57,9 @@ Transform the string source `src` with the function `fn`, returning a
 string-like transformed output object.
 
 For every node in the ast, `fn(node)` fires. The recursive walk is a
-pre-traversal, so children get called before their parents.
+post-order traversal, so children get called before their parents.
 
-Performing a pre-traversal makes it easier to write nested transforms since
+Performing a post-order traversal makes it easier to write nested transforms since
 transforming parents often requires transforming all its children first.
 
 The return value is string-like (it defines `.toString()` and `.inspect()`) so
@@ -86,7 +86,7 @@ falafel(src, {parser: acorn, plugins: { jsx: true }}, function(node) {
 
 # nodes
 
-Aside from the regular [esprima](http://esprima.org) data, you can also call
+Aside from the regular [acorn](https://npmjs.org/package/acorn) data, you can also call
 some inserted methods on nodes.
 
 Aside from updating the current node, you can also reach into sub-nodes to call
