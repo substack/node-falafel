@@ -1,6 +1,4 @@
 var acorn = require('acorn');
-var isArray = require('isarray');
-var objectKeys = require('object-keys');
 var forEach = require('foreach');
 var util = require('util');
 
@@ -35,11 +33,11 @@ module.exports = function (src, opts, fn) {
     (function walk (node, parent) {
         insertHelpers(node, parent, result.chunks);
         
-        forEach(objectKeys(node), function (key) {
+        forEach(Object.keys(node), function (key) {
             if (key === 'parent') return;
             
             var child = node[key];
-            if (isArray(child)) {
+            if (Array.isArray(child)) {
                 forEach(child, function (c) {
                     if (c && typeof c.type === 'string') {
                         walk(c, node);
@@ -65,7 +63,7 @@ function insertHelpers (node, parent, chunks) {
     
     if (node.update && typeof node.update === 'object') {
         var prev = node.update;
-        forEach(objectKeys(prev), function (key) {
+        forEach(Object.keys(prev), function (key) {
             update[key] = prev[key];
         });
         node.update = update;
