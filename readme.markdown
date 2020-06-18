@@ -84,6 +84,16 @@ falafel(src, {parser: acorn, plugins: { jsx: true }}, function(node) {
 });
 ```
 
+Or, you can just provide the AST directly as `opts.ast`.
+
+```js
+var acorn = require('acorn');
+var ast = acorn.parse(src);
+falafel(src, {ast: ast}, function(node) {
+    // ...
+});
+```
+
 # nodes
 
 Aside from the regular [acorn](https://npmjs.org/package/acorn) data, you can also call
