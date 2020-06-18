@@ -20,7 +20,7 @@ module.exports = function (src, opts, fn) {
     src = src === undefined ? opts.source : src;
     if (typeof src !== 'string') src = String(src);
     var parser = opts.parser || acorn;
-    var ast = parser.parse(src, opts);
+    var ast = opts.ast || parser.parse(src, opts);
     
     var result = {
         chunks : src.split(''),
