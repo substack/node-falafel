@@ -20,6 +20,9 @@ module.exports = function (src, opts, fn) {
     src = src === undefined ? opts.source : src;
     if (typeof src !== 'string') src = String(src);
     var parser = opts.parser || acorn;
+    
+    opts.ecmaVersion = opts.ecmaVersion || new Date().getFullYear().toString()
+    
     var ast = parser.parse(src, opts);
     
     var result = {
